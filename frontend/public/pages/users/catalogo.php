@@ -21,7 +21,6 @@
 
     <!-- Barra de búsqueda -->
     <div class="catalog__search">
-        <!-- onsubmit="return false" para que no haga nada -->
         <form class="searchbar" action="#" method="get" onsubmit="return false;">
             <span class="searchbar__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" class="i-24">
@@ -87,7 +86,6 @@
         </div>
     </div>
 
-    <!-- Paginación (solo decorativa) -->
     <nav class="catalog__pagination" aria-label="Paginación">
         <button class="page-btn" type="button" aria-label="Anterior" disabled>‹</button>
         <button class="page-btn is-active" type="button">1</button>

@@ -2,8 +2,6 @@
 
 <header class="navbar">
     <nav class="navbar__container">
-
-        <!-- BRAND ESTÁTICO (logo + nombre) -->
         <div class="navbar__brand">
             <div class="navbar__logo-wrapper">
                 <img 
@@ -19,7 +17,6 @@
             </div>
         </div>
 
-        <!-- Botón menú hamburguesa (solo se ve en móvil por CSS) -->
         <button
             class="navbar__toggle"
             type="button"
@@ -31,8 +28,6 @@
                 <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z"></path>
             </svg>
         </button>
-
-        <!-- Menú (en escritorio se ve como links normales, en móvil como desplegable) -->
         <div class="navbar__links navbar__menu" data-nav-menu>
             <a href="../../../login.php" class="navbar__link">Iniciar sesión</a>
         </div>

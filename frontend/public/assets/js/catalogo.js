@@ -1,18 +1,12 @@
 // assets/js/catalogo.js
 
 document.addEventListener('DOMContentLoaded', function () {
-  // -------- Navbar responsive (menú hamburguesa) --------
-  // HTML esperado:
-  // <button class="navbar__toggle" type="button" data-nav-toggle aria-label="Abrir menú">
-  //   <svg class="navbar__toggle-icon" ...>...</svg>
-  // </button>
-  // <nav class="navbar__menu" data-nav-menu> ... </nav>
+
 
   const navToggle = document.querySelector('[data-nav-toggle]');
   const navMenu   = document.querySelector('[data-nav-menu]');
-  const mqDesktop = window.matchMedia('(min-width: 769px)'); // mismo corte que el CSS
+  const mqDesktop = window.matchMedia('(min-width: 769px)');
 
-  // Si no existe la navbar, no hacemos nada
   if (!navToggle || !navMenu) return;
 
   function closeMenu() {
@@ -32,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Abrir / cerrar al pulsar el icono de las 3 rayitas
   navToggle.addEventListener('click', function (ev) {
-    ev.stopPropagation(); // para que no lo cierre el listener global
+    ev.stopPropagation();
     toggleMenu();
   });
 
@@ -65,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Si se vuelve a escritorio, cerramos el menú móvil
+
   function handleDesktopChange(e) {
     if (e.matches) {
       closeMenu();
