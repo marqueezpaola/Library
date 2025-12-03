@@ -1,0 +1,259 @@
+/* Tipografía principal: Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --nav-bg: #ffffff;
+    --nav-border: #e5e7eb;
+    --nav-text-main: #0f172a;
+    --nav-text-muted: #4b5563;
+    --nav-accent: #454d63;
+    --nav-accent-soft: #dbeafe;
+}
+
+/* Tipografía general del sitio */
+body {
+    font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+}
+
+/* CONTENEDOR GENERAL DE LA NAVBAR */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+}
+
+/* CONTENEDOR INTERNO */
+.navbar__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+/* BRAND (LOGO + TEXTOS) – estático, sin link */
+.navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    cursor: default;            /* que no parezca botón ni link */
+}
+
+/* Caja del logo para controlar mejor tamaño y forma */
+.navbar__logo-wrapper {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* --- Ajuste automático en teléfono --- */
+@media (max-width: 600px) {
+    .navbar__logo-wrapper {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+    }
+}
+
+
+/* CONTENEDOR DEL LOGO — SIN BORDES, SIN SOMBRA, SIN “BOTÓN” */
+.navbar__logo-wrapper {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;        /* deja que el logo se vea natural */
+}
+
+/* LOGO */
+.navbar__logo {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+      /* Evita que se salga */
+
+
+/* CONTENEDOR DE TEXTOS (título + subtítulo) */
+.navbar__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+/* TÍTULO DE LA BIBLIOTECA */
+.navbar__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #4e5871;
+    white-space: nowrap;
+}
+
+/* SUBTÍTULO ESTÁTICO */
+.navbar__subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #4e5871;
+}
+
+/* BOTÓN HAMBURGUESA (3 líneas) */
+.navbar__toggle{
+    display: none;
+    border: 0;
+    background: transparent;
+    padding: 6px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar__toggle-icon{
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+/* CONTENEDOR DEL MENÚ (links, Iniciar sesión, etc.) */
+.navbar__menu {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* BOTÓN "INICIAR SESIÓN" */
+.navbar__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.45rem 1.2rem;
+    border-radius: 999px;
+
+    font-size: 0.86rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+
+    text-decoration: none;
+    border: 1px solid #d1d5db;
+
+    color: var(--nav-text-muted);
+    background-color: #f9fafb;
+
+    transition:
+        background-color 140ms ease-out,
+        border-color 140ms ease-out,
+        color 140ms ease-out,
+        transform 120ms ease-out,
+        box-shadow 140ms ease-out;
+}
+
+/* HOVER */
+.navbar__link:hover {
+    background-color: var(--nav-accent);
+    border-color: var(--nav-accent);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+.navbar__link:focus-visible {
+    outline: 2px solid var(--nav-accent);
+    outline-offset: 3px;
+}
+
+/* ESTADO ACTIVO */
+.navbar__link--active {
+    background-color: var(--nav-accent);
+    border-color: var(--nav-accent);
+    color: #ffffff;
+}
+
+/* ===================== RESPONSIVE NAVBAR ===================== */
+
+@media (max-width: 768px) {
+    .navbar__container {
+        padding-inline: 1rem;
+        padding-block: 0.7rem;
+        gap: 0.75rem;
+    }
+
+    .navbar__title {
+        font-size: 1rem;
+        white-space: nowrap; /* solo logo + nombre, sin romper en 2 líneas */
+    }
+
+    .navbar__subtitle{
+        font-size: 0.7rem;
+    }
+
+    .navbar__logo-wrapper {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Mostramos el botón hamburguesa y escondemos el menú por defecto */
+    .navbar__toggle{
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .navbar__menu{
+        display: none; /* oculto por defecto en móvil */
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        z-index: 20;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(15,23,42,.15);
+        min-width: 180px;
+    }
+
+    .navbar__menu.is-open{
+        display: flex; /* visible cuando el JS agrega .is-open */
+    }
+
+    .navbar__menu a{
+        font-size: 14px;
+        padding: 4px 0;
+        width: 100%;
+    }
+
+    .navbar__link {
+        padding: 0.45rem 1rem;
+        font-size: 0.8rem;
+        width: 100%;          /* que ocupe todo el ancho dentro del menú */
+        justify-content: flex-start;
+    }
+}
+
+/* En móviles muy pequeños simplemente reducimos un poco más el tamaño */
+@media (max-width: 520px) {
+    .navbar__title {
+        font-size: 0.95rem;
+    }
+
+    .navbar__subtitle{
+        display: none;  /* si quieres aún más compacto en celular */
+    }
+}
