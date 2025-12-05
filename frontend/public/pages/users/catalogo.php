@@ -1,6 +1,49 @@
 <?php
-// Vista estática del catálogo público (solo maquetación)
+// llamamos al backend
+require_once __DIR__ . '/../../../app/helpers/ApiClient.php';
+$endpoints = require __DIR__ . '/../../../config/api_endpoints.php';
+
+// búsqueda del query string
+$page     = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$perPage  = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 24;
+$search   = isset($_GET['q']) ? trim($_GET['q']) : '';
+
+//llamando al backend para los datos reales
+$response = ApiClient::getJson(
+    $endpoints['catalog_list'],
+    [
+        'page'     => $page,
+        'per_page' => $perPage,
+        'q'        => $search,
+    ]
+);
+
+$books = $response['data'] ?? [];
+$meta  = $response['meta'] ?? [
+    'total'     => count($books),
+    'page'      => $page,
+    'per_page'  => $perPage,
+    'found'     => count($books),
+    'search'    => $search,
+];
+$error  = $response['error'] ?? null;
+
+// Mostrando X–Y de Z resultados
+$total   = (int)($meta['total'] ?? 0);
+$page    = (int)($meta['page'] ?? 1);
+$perPage = (int)($meta['per_page'] ?? 24);
+$found   = (int)($meta['found'] ?? count($books));
+$search  = (string)($meta['search'] ?? '');
+
+if ($total === 0) {
+    $from = 0;
+    $to   = 0;
+} else {
+    $from = ($page - 1) * $perPage + 1;
+    $to   = $from + $found - 1;
+}
 ?>
+
 <link rel="stylesheet" href="../../assets/css/catalogo.css">
 
 <header>
@@ -8,6 +51,7 @@
 </header>
 
 <section class="catalog">
+
     <!-- Header -->
     <header class="catalog__header">
         <div class="catalog__title-wrap">
@@ -15,84 +59,60 @@
             <p class="catalog__subtitle">Descubre y explora nuestra colección completa</p>
         </div>
         <div class="catalog__meta">
-            <span class="catalog__meta-text">0 libros disponibles</span>
+            <span class="catalog__meta-text">
+                <?= $total ?> libros disponibles
+            </span>
         </div>
     </header>
 
-    <!-- Barra de búsqueda -->
-    <div class="catalog__search">
-        <form class="searchbar" action="#" method="get" onsubmit="return false;">
-            <span class="searchbar__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" class="i-24">
-                    <path d="M10.5 3a7.5 7.5 0 0 1 5.93 12.22l3.18 3.18a1 1 0 0 1-1.42 1.42l-3.18-3.18A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/>
-                </svg>
-            </span>
+    <!-- Mostrar error técnico si falló el backend -->
+    <?php if (!empty($error)): ?>
+        <p style="color:red; padding: 0 1.5rem;">
+            Error al cargar el catálogo (<?= htmlspecialchars($error) ?>).
+        </p>
+    <?php endif; ?>
 
-            <input
-                type="text"
-                class="searchbar__input"
-                placeholder="Buscar por título, autor, ISBN o género…"
-                aria-label="Buscar libros">
-
-            <button class="searchbar__addon" type="button" aria-label="Abrir filtros">
-                <svg viewBox="0 0 24 24" class="i-20">
-                    <path d="M3 5a1 1 0 0 1 1-1h16a1 1 0 0 1 .8 1.6l-5.8 7.73V20a1 1 0 0 1-1.45.9l-4-2A1 1 0 0 1 9 18v-5.67L3.2 5.6A1 1 0 0 1 3 5z"/>
-                </svg>
-            </button>
-
-            <button class="btn btn--primary searchbar__submit" type="button">
-                Buscar
-            </button>
-        </form>
-    </div>
-
-    <!-- Filtros (solo visual, sin lógica) -->
-    <div class="catalog__filters">
-        <button class="filter-chip" type="button">
-            Todas las categorías <span class="filter-chip__caret">▾</span>
-        </button>
-        <button class="filter-chip" type="button">
-            Todos los autores <span class="filter-chip__caret">▾</span>
-        </button>
-        <button class="filter-chip" type="button">
-            Todos los estados <span class="filter-chip__caret">▾</span>
-        </button>
-        <button class="filter-chip" type="button">
-            Título A–Z <span class="filter-chip__caret">▾</span>
-        </button>
-        <button class="filter-link" type="button">Limpiar</button>
-
-        <div class="filters__right">
-            <label class="select-inline">
-                <span class="select-inline__label">Ver:</span>
-                <select class="select-inline__control">
-                    <option selected>24</option>
-                    <option>48</option>
-                    <option>96</option>
-                </select>
-            </label>
-        </div>
-    </div>
+    <?php
+    // Barra de búsqueda + filtros
+    include __DIR__ . '/../../view/catalog/book_filters.php';
+    ?>
 
     <!-- Info de resultados -->
     <div class="catalog__resultinfo">
-        Mostrando 0–0 de 0 resultados
+        Mostrando <?= $from ?>–<?= $to ?> de <?= $total ?> resultados
     </div>
 
-    <!-- Grid / estado vacío -->
-    <div class="catalog__grid">
-        <div class="catalog__empty">
-            No se encontraron resultados.
-        </div>
-    </div>
+    <?php
+    // Grid de tarjetas
+    include __DIR__ . '/../../view/catalog/book_grid.php';
+    ?>
 
+    <?php
+    // Paginación
+    $totalPages = $perPage > 0 ? (int)ceil($total / $perPage) : 1;
+    ?>
     <nav class="catalog__pagination" aria-label="Paginación">
-        <button class="page-btn" type="button" aria-label="Anterior" disabled>‹</button>
-        <button class="page-btn is-active" type="button">1</button>
-        <button class="page-btn" type="button" aria-label="Siguiente" disabled>›</button>
+        <button class="page-btn" type="button"
+                <?= $page <= 1 ? 'disabled' : '' ?>
+                onclick="window.location='?page=<?= max(1, $page-1) ?>&per_page=<?= $perPage ?>&q=<?= urlencode($search) ?>'">
+            ‹
+        </button>
+
+        <button class="page-btn is-active" type="button">
+            <?= $page ?>
+        </button>
+
+        <button class="page-btn" type="button"
+                <?= $page >= $totalPages ? 'disabled' : '' ?>
+                onclick="window.location='?page=<?= min($totalPages, $page+1) ?>&per_page=<?= $perPage ?>&q=<?= urlencode($search) ?>'">
+            ›
+        </button>
     </nav>
 </section>
 
+<?php
+// Modal de detalle de libro
+include __DIR__ . '/../../view/catalog/book_detail.php';
+?>
 
 <script defer src="/library/frontend/public/assets/js/catalogo.js"></script>
-

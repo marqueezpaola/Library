@@ -7,7 +7,7 @@ function get_db(): mysqli {
     $cn = @new mysqli(
         env('DB_HOST', 'localhost'),
         env('DB_USER', 'root'),
-        env('DB_PASS', '123456'),
+        env('DB_PASS', ''),
         env('DB_NAME', 'catalogo')
     );
 
