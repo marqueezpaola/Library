@@ -1,0 +1,275 @@
+/* Fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --sidebar-shell-width: 320px;
+    --sidebar-shell-width-collapsed: 110px;
+
+    --shell-bg: #ffffff;
+    --panel-bg: #ffffff;
+
+    --accent-main: #4e5871;
+
+    --text-muted:   #4e5871; 
+
+}
+
+/* GENERAL */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background-color: #ffffff;
+}
+
+/* WRAPPER LATERAL */
+
+.sidebar-wrapper {
+    position: fixed;
+    inset: 0 auto 0 0;
+    background: var(--shell-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 18px;
+    transition: width 0.35s ease;
+    z-index: 1000;
+}
+
+/* PANEL INTERIOR */
+
+.sidebar-panel {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    height: calc(100vh - 48px);
+    background-color: var(--panel-bg);
+    border-radius: 20px;
+    /* misma separación a ambos lados */
+    padding: 22px 24px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 18px 45px rgba(109, 109, 109, 0.12);
+    overflow: hidden;
+    transition: width 0.35s ease, padding 0.35s ease;
+}
+
+/* MARCA / LOGO */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    cursor: pointer;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.brand-mark img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* texto en dos líneas: Biblioteca / Roberto Echazu */
+.brand-text {
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.97rem;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 👇 NUEVO: cada línea del título no se parte en medio de las palabras */
+.brand-text .brand-line {
+    white-space: nowrap;
+}
+
+.brand-text .brand-line:first-child {
+    font-weight: 600;
+}
+
+/* NAV CENTRADO */
+
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.8rem;
+}
+
+.sidebar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.sidebar-section-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+}
+
+/* ITEMS */
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.50rem 0.90rem;
+    border-radius: 14px; /* ← AJUSTA ESTE VALOR */
+    text-decoration: none;
+    font-size: 0.98rem;
+    color: var(--text-main);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition:
+        background 0.2s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        color 0.2s ease;
+}
+
+.sidebar-item i {
+    font-size: 1.25rem;
+    color: #4e5871;
+    flex-shrink: 0;
+    transition: transform 0.18s ease;
+}
+
+.sidebar-item span {
+    white-space: nowrap;
+}
+.sidebar-item:hover {
+    background: #7984a0;
+    border-radius: 14px;
+    transform: scale(1.03); /* zoom leve */
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* Cambiar texto e ícono a blanco cuando se hace hover */
+.sidebar-item:hover span,
+.sidebar-item:hover i {
+    color: #ffffff !important;
+}
+
+/* FOOTER */
+
+.sidebar-footer {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.sidebar-logout {
+    opacity: 0.85;
+}
+
+.sidebar-logout:hover {
+    opacity: 1;
+}
+
+.sidebar-collapse i {
+    transition: transform 0.25s ease;
+}
+
+/* ESTADO COLAPSADO */
+
+/* solo reducimos el ancho del wrapper cuando se contrae */
+.sidebar-wrapper.collapsed {
+    width: var(--sidebar-shell-width-collapsed);
+}
+
+/* el panel sigue ocupando todo el ancho disponible dentro del wrapper
+   sin aplastar el logo ni los íconos */
+.sidebar-wrapper.collapsed .sidebar-panel {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 16px;
+}
+
+/* el logo se queda arriba, tal cual */
+.sidebar-wrapper.collapsed .sidebar-brand {
+    justify-content: flex-start;
+}
+
+/* el logo mantiene su tamaño normal en colapsado */
+.sidebar-wrapper.collapsed .brand-mark {
+    width: 40px;
+    height: 40px;
+}
+
+/* navegación y footer siguen visibles para que se vean los íconos */
+.sidebar-wrapper.collapsed .sidebar-nav,
+.sidebar-wrapper.collapsed .sidebar-footer {
+    display: flex;
+}
+
+/* SOLO escondemos textos: título, secciones y nombres de las opciones */
+.sidebar-wrapper.collapsed .brand-text,
+.sidebar-wrapper.collapsed .sidebar-section-title,
+.sidebar-wrapper.collapsed .sidebar-item span {
+    display: none;
+}
+
+/* rotar icono de contraer */
+.sidebar-wrapper.collapsed .sidebar-collapse i {
+    transform: rotate(180deg);
+}
+
+/* CONTENIDO PRINCIPAL */
+
+.main-content {
+    margin-left: var(--sidebar-shell-width);
+    padding: 2rem;
+    transition: margin-left 0.35s ease;
+}
+
+body.sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-shell-width-collapsed);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .sidebar-wrapper {
+        position: fixed;
+        width: var(--sidebar-shell-width);
+        padding-inline: 12px;
+    }
+
+    .sidebar-wrapper.collapsed {
+        transform: translateX(-100%);
+        width: var(--sidebar-shell-width);
+    }
+
+    .main-content,
+    body.sidebar-collapsed .main-content {
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* Contenedor general del catálogo */
+.catalog {
+    width: 100%;
+}
+
+/* Título "Libros Disponibles" */
+.catalog-main-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 18px;
+    margin-left: 6px; /* pequeño ajuste para alinearse lindo con los cards */
+}
+
+/* Mensaje cuando no hay resultados */
+.catalog__empty {
+    padding: 16px;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+/* GRID de tarjetas de libros */
+.catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}

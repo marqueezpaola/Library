@@ -1,0 +1,413 @@
+/* Fuentes y variables básicas */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --bd-border-color: #d7d7d7;
+    --bd-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+    --bd-radius-large: 24px;
+    --bd-radius-medium: 14px;
+    --bd-text-main: #222;
+    --bd-text-muted: #666;
+    --bd-accent: #3f72af;
+    --bd-bg-soft: #fafafa;
+}
+
+/* Fondo borroso detrás del modal */
+.bd-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.25);  /* capa suave transparente */
+    backdrop-filter: blur(12px);            /* desenfoque real */
+    -webkit-backdrop-filter: blur(12px);    /* soporte para Safari */
+    transition: opacity 0.25s ease;
+}
+
+
+/* === OVERLAY / MODAL GENERAL === */
+
+/* Oculto solo mientras tenga el atributo hidden */
+.bd-overlay[hidden] {
+    display: none !important;
+}
+
+/* Cuando NO tiene hidden, se muestra como flex */
+.bd-overlay:not([hidden]) {
+    display: flex;
+}
+
+/* Valores generales del overlay */
+.bd-overlay {
+    position: fixed;
+    inset: 0;
+    padding: 2.5rem 3rem;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    font-family: "Coming Soon", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+
+    /* Para la animación de entrada/salida */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease-out;
+}
+
+.bd-overlay.bd-overlay--visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Tarjeta grande centrada (como en el diseño) */
+.bd-modal {
+    position: relative;
+    background: #fff;
+    border-radius: var(--bd-radius-large);
+    border: #fff;
+    box-shadow: var(--bd-shadow);
+    width: 100%;
+    max-width: 1400px;
+    /* sin min-height fija, crece según el contenido */
+    max-height: 90vh;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 1.25rem 3rem 2.5rem;
+    box-sizing: border-box;
+
+    /* animación de entrada */
+    transform: translateY(10px) scale(0.99);
+    opacity: 0;
+    transition:
+        opacity 220ms ease-out,
+        transform 220ms ease-out;
+}
+
+.bd-overlay.bd-overlay--visible .bd-modal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* === HEADER / BOTÓN CERRAR === */
+
+.bd-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+.bd-close {
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 999px;
+    transition:
+        background-color 140ms ease-out,
+        transform 80ms ease-out;
+}
+
+.bd-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bd-close:active {
+    transform: scale(0.96);
+}
+
+/* === CUERPO: PORTADA + INFO === */
+
+.bd-body {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr); /* portada un poco más grande */
+    gap: 3rem;
+    align-items: stretch; /* dejamos que la fila tome la altura del contenido */
+}
+
+/* Portada */
+.bd-cover {
+    border-radius: var(--bd-radius-medium);
+
+    /* borde completamente transparente para el marco */
+    border: 1px solid transparent;
+    background: transparent;
+
+    /* SIN alturas fijas: se adapta a cada portada */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* pequeño espacio alrededor de la imagen para que
+       se vea el “marco” transparente y no se corte */
+    padding: 0.75rem 0.75rem;
+
+    /* que se posicione agradablemente respecto al contenido */
+    align-self: center;
+
+    /* sin overflow ni sombra aquí para evitar cortes feos */
+    overflow: visible;
+    box-shadow: none;
+}
+
+/* IMAGEN DE PORTADA */
+.bd-cover img {
+    display: block;
+
+    /* se adapta al ancho del contenedor manteniendo proporción */
+    max-width: 94%;      /* ← NUEVO: deja siempre un poco de aire lateral */
+    height: auto;
+
+    /* límite de altura para que no se pase de la pantalla
+       (ajusta 640px si quieres más o menos grande) */
+    max-height: 640px;
+
+    object-fit: contain;  /* no recorta, no deforma */
+
+    /* borde redondeado de la propia portada */
+    border-radius: 22px;
+
+    /* sombreado bonito SOLO en la imagen */
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+
+    /* ← NUEVO: centrado perfecto dentro del contenedor
+       y mismo aire a izquierda/derecha */
+    margin-inline: auto;
+}
+
+
+
+/* Panel derecho */
+.bd-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* === TÍTULO, SUBTÍTULO, AUTOR, RATING, ISBN === */
+
+.bd-main-info {
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.bd-title-inside {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--bd-text-main);
+}
+
+.bd-subtitle {
+    font-size: 1.1rem;
+    color: var(--bd-text-muted);
+}
+
+/* Bloque de autor + estrellas + ISBN */
+.bd-author-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-rows: auto auto auto;  /* ← ahora 3 filas */
+    column-gap: 0.75rem;
+    row-gap: 0.25rem;
+    align-items: center;
+    margin-top: 0.4rem;
+    font-size: 0.98rem;
+}
+
+
+/* 1ª fila: "Autor(a)" | nombre | "ISBN" | valor */
+.bd-author-row .bd-label:first-of-type {
+    /* Autor(a) */
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--bd-text-muted);
+}
+
+.bd-value--author {
+    grid-column: 2;
+    grid-row: 1;
+    color: var(--bd-text-main);
+}
+
+/* 2ª fila: estrellas debajo del autor, ocupando col 1-2 */
+.bd-rating {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.08rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.09rem;
+    color: var(--bd-accent);
+}
+
+/* Estrellas:  llenas/medio/ vacías se controlan desde JS añadiendo clases */
+.bd-star {
+    opacity: 0.3; /* por defecto desactivadas */
+}
+
+/* Ejemplo de clases que podrías usar con JS:
+   .bd-star--filled { opacity: 1; }
+   .bd-star--half   { opacity: 0.6; }
+*/
+
+/* Columna derecha: etiqueta ISBN + valor en una sola línea,
+   centrados verticalmente respecto a las dos filas */
+/* ISBN debajo de las estrellas */
+.bd-label--isbn {
+    grid-column: 1;    /* debajo del autor */
+    grid-row: 3;       /* fila nueva debajo de estrellas */
+    align-self: center;
+    color: var(--bd-text-muted);
+    margin-top: 0.3rem;
+}
+
+.bd-value--isbn {
+    grid-column: 2;    /* justo a la derecha del label */
+    grid-row: 3;       /* misma fila */
+    align-self: center;
+    color: var(--bd-text-main);
+    min-width: 80px;
+    margin-top: 0.3rem;
+}
+
+/* === SINOPSIS === */
+
+.bd-synopsis h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+    color: var(--bd-text-main);
+}
+
+.bd-synopsis p {
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--bd-text-muted);
+}
+
+/* Separador fino como en el mockup */
+.bd-divider {
+    border: none;
+    border-top: 1px solid var(--bd-border-color);
+    margin: 1.2rem 0 0.9rem;
+}
+
+/* === FICHA TÉCNICA EN DOS COLUMNAS === */
+
+.bd-specs {
+    margin-top: 0.3rem;
+}
+
+.bd-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 4rem;
+    row-gap: 0.6rem;
+    font-size: 0.95rem;
+}
+
+.bd-meta-grid > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+}
+
+.bd-meta-grid dt {
+    color: var(--bd-text-muted);
+}
+
+.bd-meta-grid dd {
+    margin: 0;
+    color: var(--bd-text-main);
+}
+
+/* === FOOTER / BOTÓN RESERVAR === */
+
+.bd-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.4rem;
+}
+
+.bd-btn-primary {
+    border-radius: 999px;
+    padding: 0.55rem 1.6rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.98rem;
+    font-family: inherit;
+    background: var(--bd-accent);
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(63, 114, 175, 0.4);
+    transition:
+        transform 100ms ease-out,
+        box-shadow 100ms ease-out,
+        background-color 120ms ease-out;
+}
+
+.bd-btn-primary:hover {
+    background-color: #355f91;
+    box-shadow: 0 10px 24px rgba(63, 114, 175, 0.5);
+    transform: translateY(-1px);
+}
+
+.bd-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(63, 114, 175, 0.35);
+}
+
+/* === RESPONSIVE === */
+
+@media (max-width: 1024px) {
+    .bd-overlay {
+        padding: 1.5rem;
+    }
+
+    .bd-modal {
+        padding-inline: 1.5rem;
+    }
+
+    .bd-body {
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 2rem;
+    }
+
+    .bd-cover {
+        min-height: 380px;
+        max-height: 480px;
+    }
+}
+
+@media (max-width: 768px) {
+    .bd-overlay {
+        padding: 1rem;
+    }
+
+    .bd-modal {
+        padding: 1rem 1.2rem 1.7rem;
+        border-radius: 18px;
+        max-height: 100vh;
+    }
+
+    .bd-body {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 1.6rem;
+    }
+
+    .bd-cover {
+        max-width: 280px;
+        margin: 0 auto;
+        width: 100%;
+        min-height: 360px;
+        max-height: 440px;
+    }
+
+    .bd-meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+    }
+}

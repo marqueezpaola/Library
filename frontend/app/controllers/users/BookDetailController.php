@@ -22,6 +22,8 @@ class BookDetailController
 
         $pageTitle = $book ? $book['title'] : 'Detalle de libro';
 
-        require __DIR__ . '/../../../public/pages/users/book_detail.php';
+        // Ruta real de tu vista de detalle
+        require __DIR__ . '/../../../public/view/catalog/book_detail.php';
+
     }
 }

@@ -1,0 +1,293 @@
+:root {
+    /* mismos valores del sidebar para alinearlo */
+    --sidebar-shell-width: 320px;
+    --sidebar-shell-width-collapsed: 110px;
+
+    --nav-bg: #f7f7fb;
+    --nav-card-bg: #ffffff;
+    --nav-text: #4e5871;
+}
+
+/* NAVBAR GENERAL */
+
+.admin-navbar {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-shell-width);
+    right: 0;
+    z-index: 900;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    font-family: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Cuando el sidebar está colapsado, movemos el navbar */
+body.sidebar-collapsed .admin-navbar {
+    left: var(--sidebar-shell-width-collapsed);
+}
+
+.admin-navbar-inner {
+    width: 100%;
+    max-width: 1280px;
+    padding: 0 32px;
+    margin-inline: auto;
+
+    display: flex;
+    align-items: center;
+}
+
+/* El grupo derecho se pega a la derecha siempre */
+.admin-navbar-right {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* CAMPANA */
+
+.admin-navbar-bell {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: none;
+    background: var(--nav-card-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-navbar-bell i {
+    font-size: 1.15rem;
+    color: var(--nav-text);
+    transition: color 0.2s ease;
+}
+
+.admin-navbar-bell:hover {
+    background: #4e5871;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+}
+
+.admin-navbar-bell:hover i {
+    color: #ffffff;
+}
+
+/* globito rojo de cantidad */
+.admin-navbar-badge {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: #ff4b5c;
+    color: #ffffff;
+    font-size: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========== USUARIO + DROPDOWN ========== */
+
+/* Contenedor del dropdown (ambos nombres por compatibilidad) */
+.admin-navbar-user-dropdown,
+.admin-navbar-user-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* “píldora” del usuario */
+.admin-navbar-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 6px 14px;          /* un poco más ancho (del segundo bloque) */
+    border-radius: 14px;        /* más cuadrado y elegante */
+    background: var(--nav-card-bg);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    user-select: none;
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+.admin-navbar-user:hover {
+    background: #eef0f6;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* avatar */
+.admin-navbar-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.admin-navbar-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* nombre */
+.admin-navbar-username {
+    font-size: 0.92rem;  /* ligero ajuste del segundo bloque */
+    font-weight: 500;
+    color: var(--nav-text);
+    white-space: nowrap;
+}
+
+/* flecha */
+.admin-navbar-user-arrow,
+.admin-navbar-user-toggle i.bi-chevron-down {
+    font-size: 0.9rem;
+    color: var(--nav-text);
+    transition: transform 0.25s ease;
+}
+
+/* animación extra de la flecha desde JS */
+.admin-navbar-user-arrow.arrow-open {
+    transform: rotate(180deg);
+}
+
+/* ====== MENÚ DROPDOWN ====== */
+
+.admin-navbar-user-menu {
+    position: absolute;
+    top: 58px;          /* altura del dropdown */
+    right: 0;
+    width: 210px;       /* ANCHO del menú */
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0s linear 0.18s;
+    z-index: 910;
+}
+
+/* se abre con hover del contenedor (wrapper) */
+.admin-navbar-user-wrapper:hover .admin-navbar-user-menu,
+.admin-navbar-user-dropdown:hover .admin-navbar-user-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0s;
+}
+
+/* y también giramos la flecha en hover */
+.admin-navbar-user-wrapper:hover .admin-navbar-user-arrow,
+.admin-navbar-user-dropdown:hover .admin-navbar-user-arrow {
+    transform: rotate(180deg);
+}
+
+/* Items del menú (con iconos) */
+.admin-navbar-user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 8px 16px;
+    font-size: 0.92rem;
+    color: var(--nav-text);
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.admin-navbar-user-menu-item i {
+    font-size: 1.15rem;
+    color: var(--nav-text);
+    transition: color 0.25s ease;
+}
+
+/* Hover del item */
+.admin-navbar-user-menu-item:hover {
+    background: #4e5871;
+    color: #ffffff;
+}
+
+.admin-navbar-user-menu-item:hover i {
+    color: #ffffff;
+}
+
+/* Animación de aparición (opcional, usada si luego manejas .open con JS) */
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación “ring” de la campana */
+
+@keyframes nav-bell-ring {
+    0%   { transform: rotate(0deg); }
+    20%  { transform: rotate(-12deg); }
+    40%  { transform: rotate(10deg); }
+    60%  { transform: rotate(-8deg); }
+    80%  { transform: rotate(4deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.admin-navbar-bell.is-ringing i {
+    animation: nav-bell-ring 0.6s ease;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .admin-navbar {
+        left: 0;
+    }
+
+    body.sidebar-collapsed .admin-navbar {
+        left: 0;
+    }
+
+    .admin-navbar-inner {
+        padding: 0 16px;
+    }
+
+    .admin-navbar-user {
+        padding-inline: 8px;
+    }
+
+    .admin-navbar-username {
+        font-size: 0.85rem;
+    }
+}

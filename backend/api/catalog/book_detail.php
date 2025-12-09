@@ -114,38 +114,75 @@ if ($driveId !== '') {
     $coverUrl = $book['portada_url'];
 }
 
-
 $bookDetail = [
     'id'                 => (int)$book['id'],
+
+    // Títulos / autoría
     'title'              => $book['titulo'],
     'subtitle'           => $book['subtitulo'],
     'author'             => $book['autor'],
+
+    // Texto largo
     'synopsis'           => $book['sinopsis'],
+
+    // Editorial
     'publisher'          => $book['editorial'],
     'imprint'            => $book['sello_editorial'],
+
+    // Año
     'year'               => $book['anio_edicion'],
+
+    // Identificadores
     'isbn'               => $book['isbn'],
     'isbn13'             => $book['isbn13'],
-    'pages'              => $book['nro_paginas'],
+
+    // Páginas: clave nueva y alias con el nombre original de la columna
+    'pages'              => $book['nro_paginas'],   // para el frontend nuevo
+    'nro_paginas'        => $book['nro_paginas'],   // por si algo del frontend viejo usa este nombre
+
+    // Clasificación
     'dewey_code'         => $book['codigo_clasificacion'],
     'author_cutter'      => $book['marbete_autor'],
+
+    // Procedencia
     'provenance'         => $book['procedencia'],
     'entry_date'         => $book['fecha_ingreso'],
     'ingress_state'      => $book['estado_ingreso'],
     'inventory_state'    => $book['estado_inventario'],
     'originality'        => $book['originalidad'],
+
+    // Nacionalidad: dos claves para que cualquier cosa la pueda usar
     'author_country'     => $book['nacionalidad_autor'],
+    'country'            => $book['nacionalidad_autor'],
+
+    // Presentación / formato
     'presentation'       => $book['presentacion'],
-    'format'             => $book['formato'],
+
+    // Formato: clave nueva y alias
+    'format'             => $book['formato'],       // para el frontend nuevo
+    'formato'            => $book['formato'],       // alias por compatibilidad
+
+    // Edad recomendada
     'age_rating'         => $book['edad_recomendada'],
+
+    // Otros
     'note'               => $book['nota'],
     'rating_avg'         => $book['valoracion_promedio'],
     'created_at'         => $book['creado_en'],
     'updated_at'         => $book['actualizado_en'],
+
+    // Portada
     'cover_url'          => $coverUrl,
     'cover_alt'          => $book['portada_alt'],
+
+    // Stock
     'stock_total'        => (int)$book['stock_total'],
     'shelf_locations'    => $book['ubicaciones'],
+
+    // De momento no hay idioma en la tabla, así que no podemos mandar 'language' sin romper el SELECT
+    // 'language'        => ...,
+
+    // Listas vacías por ahora
     'genres'             => [],
     'topics'             => [],
 ];
